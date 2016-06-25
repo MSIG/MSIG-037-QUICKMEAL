@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="881c3b5b-1120-4f63-b02d-55f8970d4194">
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[select x.*
+from    (select  d.id_categoria,
+        d.descripcion_categoria as CATEGORIA,
+        b.id_item as CODIGO,
+        b.descripcion_item as PLATILLO,
+        count(b.id_item) CANTIDAD_VENDIDA
+from    detalle_venta as a,
+        item as b,
+        venta as c,
+        categoria as d
+where   a.id_item = b.id_item
+    and a.id_venta = c.id_venta
+    and b.id_categoria = d.id_categoria
+    and str_to_date(date_format(c.fecha_venta, '%d-%m-%Y'), '%d-%m-%Y') 
+        between str_to_date('01-11-2015', '%d-%m-%Y')
+            and str_to_date('25-11-2015', '%d-%m-%Y')
+group by d.id_categoria,
+             d.descripcion_categoria,
+             b.id_item,
+             b.descripcion_item
+) as x
+order by x.CANTIDAD_VENDIDA desc]]>
+	</queryString>
+	<field name="CATEGORIA" class="java.lang.String"/>
+	<field name="CODIGO" class="java.lang.Long"/>
+	<field name="PLATILLO" class="java.lang.String"/>
+	<field name="CANTIDAD_VENDIDA" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="CATEGORIA">
+		<groupExpression><![CDATA[$F{CATEGORIA}]]></groupExpression>
+		<groupHeader>
+			<band height="37">
+				<frame>
+					<reportElement uuid="58b3aa37-653c-4ebb-8a32-44284c520bb4" mode="Opaque" x="-21" y="7" width="597" height="24" forecolor="#B89F7D" backcolor="#F2EBDF"/>
+					<rectangle>
+						<reportElement uuid="9e04eadc-68d9-4b1c-898b-c56d85356f47" mode="Opaque" x="21" y="0" width="36" height="24" backcolor="#736343"/>
+						<graphicElement>
+							<pen lineWidth="0.0"/>
+						</graphicElement>
+					</rectangle>
+					<textField>
+						<reportElement uuid="59052013-c9bf-49b5-8fa7-b188bddae9b4" style="SubTitle" x="68" y="0" width="413" height="24" forecolor="#736343"/>
+						<textElement>
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{CATEGORIA}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="136" splitType="Stretch">
+			<image>
+				<reportElement uuid="873a9684-3618-4d1d-b7d0-92eba90be20a" x="0" y="0" width="164" height="126"/>
+				<imageExpression><![CDATA["coffee.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="3ffb3926-a0e8-4804-ab06-c9dfc12243a0" style="Title" x="170" y="0" width="263" height="62"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Coffee Title]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d134ba09-5360-4669-bee1-52ab11b9e25c" style="SubTitle" x="219" y="62" width="196" height="22"/>
+				<textElement>
+					<font fontName="Times New Roman" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Coffee SubTitle]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e1ed8e69-1305-4d4d-b6be-dcfcbe8c92cb" x="172" y="94" width="383" height="42"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce auctor purus gravida arcu aliquam mattis. Donec et nulla libero, ut varius massa. Nulla sed turpis elit. Etiam aliquet mauris a ligula hendrerit in auctor leo lobortis.]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="91c0272d-d331-474a-9799-90135caaa011" x="433" y="-115" width="267" height="209"/>
+				<imageExpression><![CDATA["coffee_stain.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement uuid="1eab25a7-fab4-4c0f-bc3d-2125ab73be33" positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="ccd0b407-3242-4fb4-b42c-8e3cd78af9af" style="Column header" x="0" y="0" width="185" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[CODIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="87d0b5d1-d5ad-4404-871b-a62bbd45e39e" style="Column header" x="185" y="0" width="185" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[PLATILLO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9621139b-185d-4dbe-a14d-e66e4f35b81e" style="Column header" x="370" y="0" width="185" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[CANTIDAD_VENDIDA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement uuid="76bbb248-98c1-4992-b376-f1e8fcc550a1" style="Row" mode="Opaque" x="0" y="0" width="555" height="15"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="5850c001-10fb-4b10-a8b5-7c6a686bb116" style="Detail" x="0" y="0" width="185" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{CODIGO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="419623a5-1568-4e07-b8f9-0e335452f92c" style="Detail" x="185" y="0" width="185" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{PLATILLO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="0fed7e9d-719a-4077-9376-8a827fe1c770" style="Detail" x="370" y="0" width="185" height="15"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{CANTIDAD_VENDIDA}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement uuid="265ca547-e397-4752-9e31-344c2666180c" positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement uuid="614e32a6-f15b-40b6-ba77-cdc86216ef12" mode="Opaque" x="-21" y="1" width="597" height="24" forecolor="#D0B48E" backcolor="#F2EBDF"/>
+				<textField evaluationTime="Report">
+					<reportElement uuid="46f9f51e-b213-4718-85fd-7837a0c56000" style="Column header" x="533" y="0" width="40" height="20" forecolor="#736343"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="19b66922-be5e-4b2c-b912-37a4a4a82462" style="Column header" x="453" y="0" width="80" height="20" forecolor="#736343"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement uuid="c70b301a-558f-45b8-929a-eda908e54abf" style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

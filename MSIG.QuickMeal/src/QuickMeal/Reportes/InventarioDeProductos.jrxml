@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="700" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaac868a-396b-4b04-9801-fb8690f73395">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<queryString>
+		<![CDATA[select *, round(costo_producto * cantidad_producto, 2) as total_costo from vw_inventario_productos]]>
+	</queryString>
+	<field name="PRODUCTO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="COSTO_PRODUCTO" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CANTIDAD_PRODUCTO" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CADUCIDAD_PRODUCTO" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="UNIDAD_DE_MEDIDA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PROVEEDOR" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_costo" class="java.math.BigDecimal"/>
+	<variable name="total_valor" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_costo}]]></variableExpression>
+	</variable>
+	<group name="PROVEEDOR">
+		<groupExpression><![CDATA[$F{PROVEEDOR}]]></groupExpression>
+		<groupHeader>
+			<band height="37">
+				<frame>
+					<reportElement uuid="aa23d6cd-7084-4a46-a004-e387533523d2" mode="Opaque" x="-21" y="7" width="597" height="24" forecolor="#B89F7D" backcolor="#F2EBDF"/>
+					<rectangle>
+						<reportElement uuid="a538e436-a7a7-4256-98d3-91795b26d45d" mode="Opaque" x="21" y="0" width="36" height="24" backcolor="#736343"/>
+						<graphicElement>
+							<pen lineWidth="0.0"/>
+						</graphicElement>
+					</rectangle>
+					<textField>
+						<reportElement uuid="f1d353a4-a0fb-4865-a1b3-9dfeb787dd39" style="SubTitle" x="68" y="0" width="505" height="24" forecolor="#736343"/>
+						<textElement>
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{PROVEEDOR}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="107" splitType="Stretch">
+			<image>
+				<reportElement uuid="1313870d-1d3b-468a-be74-06d445cd31a1" x="0" y="0" width="90" height="84"/>
+				<imageExpression><![CDATA[this.getClass().getResource("QuickMeal/Reportes/logotipo.jpg")]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="99f16566-7460-4235-b5df-b7076376a8f1" style="Title" x="111" y="0" width="441" height="62"/>
+				<textElement verticalAlignment="Middle">
+					<font size="36" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Inventario de Productos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="627678f2-f784-434a-8a3d-fc5dc1dce578" style="SubTitle" x="111" y="62" width="209" height="22"/>
+				<textElement>
+					<font fontName="Times New Roman" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[QuickMeal Version 1.0]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement uuid="2191ad45-7b41-485e-b022-12f8377dd055" positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="f1266734-086c-42ed-9f09-86ff4d4015f3" style="Column header" x="0" y="0" width="170" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4ba614a7-5873-4c2c-94a6-b5d61d111725" style="Column header" x="176" y="0" width="73" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[Costo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c3528b9b-f8b1-4808-90a6-9aeaed8117b1" style="Column header" x="257" y="0" width="63" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="02db3adf-24c6-449e-8c58-93ff028f364a" style="Column header" x="326" y="0" width="73" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[Caducidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="36db605f-bd3e-4b15-a150-49fad981850e" style="Column header" x="405" y="0" width="54" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[Medida]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="36db605f-bd3e-4b15-a150-49fad981850e" style="Column header" x="471" y="0" width="81" height="15" forecolor="#736343"/>
+				<textElement/>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement uuid="abea3f4c-bf7c-454e-93be-c7e8cdeae7d3" style="Row" mode="Opaque" x="0" y="0" width="555" height="15"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="a63ed1c7-45bc-4c41-b58c-5636d8347cda" style="Detail" x="0" y="0" width="170" height="15"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{PRODUCTO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="9ddee94d-b367-4855-a7e6-21582e3a34c5" style="Detail" x="176" y="0" width="73" height="15"/>
+					<textElement textAlignment="Right">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{COSTO_PRODUCTO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="52915087-c585-4cac-bbb2-9108ed161acf" style="Detail" x="257" y="0" width="63" height="15"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CANTIDAD_PRODUCTO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="239f9e68-8e5b-4d83-b3a3-d3d20a46807b" style="Detail" x="326" y="0" width="73" height="15"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CADUCIDAD_PRODUCTO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="5d1cdefc-b29b-4d1f-bccb-899cb6276442" style="Detail" x="405" y="0" width="54" height="15"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{UNIDAD_DE_MEDIDA}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="5d1cdefc-b29b-4d1f-bccb-899cb6276442" style="Detail" x="471" y="0" width="81" height="15"/>
+					<textElement textAlignment="Right">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{total_costo}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="8" splitType="Stretch">
+			<line>
+				<reportElement uuid="8f0f4cde-3394-426f-81c6-77c5540c452b" positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="5" splitType="Stretch"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="19">
+			<textField>
+				<reportElement uuid="9200c52d-979c-4420-911c-2e5df50ec0b6" x="474" y="0" width="81" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{total_valor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="7fad880c-cac0-4f45-9eef-f845f494f502" style="Column header" x="0" y="1" width="170" height="14" forecolor="#736343"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

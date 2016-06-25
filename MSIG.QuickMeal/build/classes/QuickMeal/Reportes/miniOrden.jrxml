@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="150" pageHeight="350" columnWidth="130" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="6e0b4617-b4a0-46f0-b753-99fe58dfbcac">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="76"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="P_ID_ESTACION" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_ESTADO_ORDEN" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_ESTADO_DETALLE_ORDEN" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_ESTACION" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select  a.id_venta no_venta,
+        a.fecha_venta fecha,
+        d.id_orden no_orden,
+        c.codigo_cliente codigo,
+        c.nombre_cliente cliente,
+        b.id_item codigo_item,
+        e.descripcion_item producto,
+        sum(b.cantidad_detalle_venta) as cantidad,
+        sum(e.precio_item) as precio,
+        a.nota_venta as notas
+from    venta as a,
+        detalle_venta as b,
+        cliente as c,
+        orden as d,
+        item as e
+where   a.id_venta = b.id_venta
+    and a.id_cliente = c.id_cliente
+    and a.id_venta = d.id_venta
+    and b.id_venta = d.id_venta
+    and b.id_item = e.id_item
+    and e.precio_item > 0
+    and a.id_venta = (  select max(x.id_venta) 
+                        from venta as x
+                        where x.id_estacion = $P{P_ESTACION}
+                      )
+    and d.estado_orden = $P{P_ESTADO_ORDEN}
+    and b.estado_detalle_venta = $P{P_ESTADO_DETALLE_ORDEN}
+group by a.id_venta,
+        a.fecha_venta,
+        d.id_orden,
+        c.codigo_cliente,
+        c.nombre_cliente,
+        b.id_item,
+        e.descripcion_item]]>
+	</queryString>
+	<field name="no_venta" class="java.lang.Long"/>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="no_orden" class="java.lang.Long"/>
+	<field name="codigo" class="java.lang.Integer"/>
+	<field name="cliente" class="java.lang.String"/>
+	<field name="codigo_item" class="java.lang.Long"/>
+	<field name="producto" class="java.lang.String"/>
+	<field name="cantidad" class="java.math.BigDecimal"/>
+	<field name="precio" class="java.math.BigDecimal"/>
+	<field name="notas" class="java.lang.String"/>
+	<group name="no_venta">
+		<groupExpression><![CDATA[$F{no_venta}]]></groupExpression>
+		<groupHeader>
+			<band height="5"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<group name="no_orden">
+		<groupExpression><![CDATA[$F{no_orden}]]></groupExpression>
+		<groupHeader>
+			<band height="5"/>
+		</groupHeader>
+	</group>
+	<group name="fecha">
+		<groupExpression><![CDATA[$F{fecha}]]></groupExpression>
+	</group>
+	<group name="codigo">
+		<groupExpression><![CDATA[$F{codigo}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="117" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="f373a74f-9e0d-44b9-bda5-090fcf74cc6a" style="Detail" x="0" y="23" width="130" height="26" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="bd6e2bab-6789-46d7-a0c1-74a559c48612" style="Column header" x="0" y="54" width="130" height="10" forecolor="#000000"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Notas:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="1a241b48-e91d-46b2-91f3-8374a7804089" style="Detail" x="0" y="64" width="130" height="53"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{notas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c17fd101-2424-4f03-92c7-abd4861c565f" style="SubTitle" x="0" y="0" width="130" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{no_orden}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement uuid="79442c7c-c3d5-4ed4-a0b7-d90975773aa1" positionType="FixRelativeToBottom" x="0" y="3" width="130" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement uuid="ee81efed-c900-4f77-9777-9568a2266f0c" style="Title" mode="Opaque" x="0" y="0" width="130" height="15"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="46f8aac2-3be2-4a0d-8d01-6d2b2ecea5b5" style="Detail" x="0" y="0" width="95" height="15"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="9ba0e85e-a806-4452-a38b-ea0fbc160482" style="Detail" x="107" y="0" width="23" height="15"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="4498c1a6-be52-4859-a3b6-3c3fc6cf9cd5" x="96" y="0" width="10" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement uuid="70f5c45e-4aee-415c-a0ea-8aae65f78779" positionType="FixRelativeToBottom" x="0" y="3" width="130" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="7" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

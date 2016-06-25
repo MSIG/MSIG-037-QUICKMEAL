@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="725" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eeea8063-9547-4451-a26e-a9c605710a36">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="P_FECHA_INICIAL" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_FECHA_FINAL" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select  e.empresa_empleado,
+        e.tipo_empleado,
+        e.nombre_empleado,
+        v.id_venta,
+        v.fecha_venta,
+        round(sum(v.propina_venta) / count(v.propina_venta), 2) as propina,
+        sum(i.precio_item) as total,
+        round(sum(i.precio_item) * e.bono_empleado, 2) as bonificacion
+from    venta as v,
+        orden as o,
+        detalle_venta as d,
+        item as i,
+        usuario as u,
+        empleado as e,
+        cliente as f
+where   v.id_venta = d.id_venta
+    and f.id_cliente = v.id_cliente
+    and f.cc_cliente = '0'
+    and v.id_venta = o.id_venta
+    and o.estado_orden = 'E'
+    and d.id_item = i.id_item
+    and v.id_usuario = u.id_usuario
+    and u.id_empleado = e.id_empleado
+    and date_format(v.fecha_venta, '%d-%m-%Y') between $P{P_FECHA_INICIAL} and $P{P_FECHA_FINAL}
+group by e.empresa_empleado,
+        e.tipo_empleado,
+        e.id_empleado,
+        e.nombre_empleado,
+        e.fecha_ingreso_empleado,
+        v.id_venta]]>
+	</queryString>
+	<field name="empresa_empleado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo_empleado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre_empleado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_venta" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_venta" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="propina" class="java.math.BigDecimal"/>
+	<field name="total" class="java.math.BigDecimal"/>
+	<field name="bonificacion" class="java.math.BigDecimal"/>
+	<variable name="total_propina_empleado" class="java.lang.Double" resetType="Group" resetGroup="nombre_empleado" calculation="Sum">
+		<variableExpression><![CDATA[$F{propina}]]></variableExpression>
+	</variable>
+	<variable name="total_total_empleado" class="java.lang.Double" resetType="Group" resetGroup="nombre_empleado" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<variable name="total_boni_empleado" class="java.lang.Double" resetType="Group" resetGroup="nombre_empleado" calculation="Sum">
+		<variableExpression><![CDATA[$F{bonificacion}]]></variableExpression>
+	</variable>
+	<group name="empresa_empleado">
+		<groupExpression><![CDATA[$F{empresa_empleado}]]></groupExpression>
+		<groupHeader>
+			<band height="37">
+				<frame>
+					<reportElement uuid="f952f904-1d19-4e05-87a5-381bd570f5b7" mode="Opaque" x="-21" y="7" width="597" height="24" forecolor="#B89F7D" backcolor="#F2EBDF"/>
+					<rectangle>
+						<reportElement uuid="bb7ea5d8-9fa5-4ad4-ab24-4eba10a46bc0" mode="Opaque" x="21" y="0" width="36" height="24" backcolor="#736343"/>
+						<graphicElement>
+							<pen lineWidth="0.0"/>
+						</graphicElement>
+					</rectangle>
+					<textField>
+						<reportElement uuid="15ecba64-0e9b-4023-bf1e-9e71245d6850" style="SubTitle" x="68" y="0" width="413" height="24" forecolor="#736343"/>
+						<textElement>
+							<font isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{empresa_empleado}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="5"/>
+		</groupFooter>
+	</group>
+	<group name="tipo_empleado">
+		<groupExpression><![CDATA[$F{tipo_empleado}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<textField>
+					<reportElement uuid="324c048a-60de-478a-ae8a-6da51c90c6eb" style="SubTitle" x="0" y="4" width="460" height="20"/>
+					<textElement>
+						<font size="16" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tipo_empleado}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="nombre_empleado">
+		<groupExpression><![CDATA[$F{nombre_empleado}]]></groupExpression>
+		<groupHeader>
+			<band height="6"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="36">
+				<textField>
+					<reportElement uuid="c015a0cd-7516-48e8-b6d5-dea55abaa681" x="337" y="9" width="63" height="16"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{total_propina_empleado}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="71c98863-68df-4ecd-a005-26dc43292735" x="337" y="4" width="63" height="1"/>
+				</line>
+				<textField>
+					<reportElement uuid="c015a0cd-7516-48e8-b6d5-dea55abaa681" x="405" y="9" width="69" height="16"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{total_total_empleado}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="71c98863-68df-4ecd-a005-26dc43292735" x="405" y="4" width="66" height="1"/>
+				</line>
+				<textField>
+					<reportElement uuid="c015a0cd-7516-48e8-b6d5-dea55abaa681" x="484" y="9" width="68" height="16"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{total_boni_empleado}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="71c98863-68df-4ecd-a005-26dc43292735" x="484" y="4" width="68" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="106" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="e3c3a666-27c1-4739-882a-9db33796ebcb" style="Title" x="111" y="0" width="441" height="62"/>
+				<textElement verticalAlignment="Middle">
+					<font size="34" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Ventas por Empleado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d0944388-f256-453e-bc28-1a7691d7920b" style="SubTitle" x="111" y="62" width="441" height="22"/>
+				<textElement>
+					<font fontName="Times New Roman" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[QuickMeal Version 1.0]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="8fd16163-2fd6-47b2-a98b-d9889172026d" x="1" y="0" width="96" height="84"/>
+				<imageExpression><![CDATA[this.getClass().getResource("QuickMeal/Reportes/logotipo.jpg")]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement uuid="b2553210-865c-4604-82d3-c880c355af37" positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement uuid="35008af5-d565-45d7-83a2-2c64ff6e00de" style="Column header" x="140" y="0" width="70" height="15" forecolor="#736343"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Venta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="848d8539-9d1e-4838-9f60-b6f16bef64dd" style="Column header" x="215" y="0" width="118" height="15" forecolor="#736343"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Fecha y Hora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4f8f5b9c-1ed9-4827-9873-84a9fe18c04a" style="Column header" x="337" y="0" width="63" height="15" forecolor="#736343"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Propina]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="65a4660c-7046-4d86-a0f1-4caabc6347a9" style="Column header" x="405" y="1" width="66" height="15" forecolor="#736343"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d5046d79-7266-4722-8170-7bc74cf18164" style="Column header" x="474" y="0" width="81" height="15" forecolor="#736343"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Bonificacion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="35008af5-d565-45d7-83a2-2c64ff6e00de" style="Column header" x="0" y="0" width="134" height="15" forecolor="#736343"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Empleado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement uuid="c100c41c-98bf-4ac9-82e4-faba1d1a78a3" style="Row" mode="Opaque" x="0" y="0" width="555" height="15"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="6ced4d07-e04a-4c3f-820a-ddfdb2cf45a3" style="Detail" x="140" y="0" width="70" height="15"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{id_venta}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="c041c976-5b37-4045-a3ad-1a0abd6dc4aa" style="Detail" x="215" y="0" width="118" height="15"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{fecha_venta}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="63d3bacb-584d-4c53-b182-cb71d9b598c0" style="Detail" x="337" y="0" width="63" height="15"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{propina}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="a44482fd-3f0a-47f6-8c86-c1d61f9ffbbb" style="Detail" x="405" y="0" width="66" height="15"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="59bf8d33-d279-4e4a-a7b7-643e40baf2f0" style="Detail" x="484" y="0" width="71" height="15"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$F{bonificacion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="6ced4d07-e04a-4c3f-820a-ddfdb2cf45a3" style="Detail" x="1" y="0" width="133" height="15"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression><![CDATA[$F{nombre_empleado}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement uuid="fbac581d-b691-4227-840f-02595b2bb226" positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement uuid="0b4339ce-a1c0-47fe-aa5a-40829a1b453a" mode="Opaque" x="-21" y="1" width="597" height="24" forecolor="#D0B48E" backcolor="#F2EBDF"/>
+				<textField evaluationTime="Report">
+					<reportElement uuid="70fd7515-855d-4f3d-a311-92fecb6ddc9c" style="Column header" x="533" y="0" width="40" height="20" forecolor="#736343"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="241b9f46-16cf-4ad8-a6c1-3e21aad788cd" style="Column header" x="453" y="0" width="80" height="20" forecolor="#736343"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement uuid="8ac7ffe7-0620-4731-997c-4aa1b7d18f58" style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
