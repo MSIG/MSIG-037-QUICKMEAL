@@ -156,6 +156,7 @@ public class QuickMeal extends javax.swing.JFrame {
         menuReportesHisComprasCC1 = new javax.swing.JMenuItem();
         menuReportesReOrden = new javax.swing.JMenuItem();
         menuReportesCambioPrecio = new javax.swing.JMenuItem();
+        menuReportesCierreDiarioCaja = new javax.swing.JMenuItem();
         menuBaseDeDatos = new javax.swing.JMenu();
         menuExportarCatalogoDeProductos = new javax.swing.JMenuItem();
         menuImportarCatalogoDeProductos = new javax.swing.JMenuItem();
@@ -491,6 +492,16 @@ public class QuickMeal extends javax.swing.JFrame {
             }
         });
         menuReportes.add(menuReportesCambioPrecio);
+
+        menuReportesCierreDiarioCaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/QuickMeal/Imagenes/reporte.png"))); // NOI18N
+        menuReportesCierreDiarioCaja.setText("Cierre Diario Caja");
+        menuReportesCierreDiarioCaja.setActionCommand("");
+        menuReportesCierreDiarioCaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuReportesCierreDiarioCajaActionPerformed(evt);
+            }
+        });
+        menuReportes.add(menuReportesCierreDiarioCaja);
 
         menu.add(menuReportes);
 
@@ -1050,6 +1061,18 @@ public class QuickMeal extends javax.swing.JFrame {
         exportar.toFront();
    }//GEN-LAST:event_menuHistorialCompraProductosActionPerformed
 
+    private void menuReportesCierreDiarioCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReportesCierreDiarioCajaActionPerformed
+        ReportesCierreDiarioCaja reporte = new ReportesCierreDiarioCaja();
+        pnlPrincipal.add(reporte);
+        int ancho = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
+        int alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
+        int x  = (ancho / 2) - (reporte.getWidth() / 2);
+        int y  = (alto / 2) - (reporte.getHeight() / 2);
+        reporte.setVisible(true);
+        reporte.toFront();
+        reporte.setLocation(x, y);
+    }//GEN-LAST:event_menuReportesCierreDiarioCajaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1123,6 +1146,7 @@ public class QuickMeal extends javax.swing.JFrame {
     public static javax.swing.JMenuItem menuProveedores;
     public static javax.swing.JMenu menuReportes;
     private javax.swing.JMenuItem menuReportesCambioPrecio;
+    private javax.swing.JMenuItem menuReportesCierreDiarioCaja;
     private javax.swing.JMenuItem menuReportesHIsComprasClienteConsolidado;
     public static javax.swing.JMenuItem menuReportesHisComprasCC;
     public static javax.swing.JMenuItem menuReportesHisComprasCC1;

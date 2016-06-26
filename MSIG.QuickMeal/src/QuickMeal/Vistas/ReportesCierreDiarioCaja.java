@@ -19,13 +19,15 @@ import net.sf.jasperreports.view.JasperViewer;
  *
  * @author Derwin
  */
-public class ReportesHistorialComprasPorFecha extends javax.swing.JInternalFrame {
+public class ReportesCierreDiarioCaja extends javax.swing.JInternalFrame {
 
+    Mensaje mensaje = new Mensaje();
     /**
      * Creates new form ReportesHistorialComprasPorFecha
      */
-    public ReportesHistorialComprasPorFecha() {
+    public ReportesCierreDiarioCaja() {
         initComponents();
+        txtUsuario.setText(QuickMeal.getNombreUsuario());
     }
 
     /**
@@ -43,10 +45,12 @@ public class ReportesHistorialComprasPorFecha extends javax.swing.JInternalFrame
         lblFormato = new javax.swing.JLabel();
         pnlParametros = new javax.swing.JPanel();
         lblFechaInicial = new javax.swing.JLabel();
-        lblFechaFinal = new javax.swing.JLabel();
+        txtFechaInicial = new javax.swing.JFormattedTextField();
         btnGenerarReporte = new javax.swing.JButton();
-        txtFechaInicial = new javax.swing.JTextField();
-        txtFechaFinal = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        cbxTurno = new javax.swing.JComboBox();
+        txtUsuario = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
 
         setClosable(true);
         setForeground(java.awt.Color.white);
@@ -59,7 +63,7 @@ public class ReportesHistorialComprasPorFecha extends javax.swing.JInternalFrame
 
         lblTitulo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitulo.setText("Historial de Compras por Fecha");
+        lblTitulo.setText("Cierre Diario Caja");
 
         javax.swing.GroupLayout pnlTituloLayout = new javax.swing.GroupLayout(pnlTitulo);
         pnlTitulo.setLayout(pnlTituloLayout);
@@ -102,10 +106,10 @@ public class ReportesHistorialComprasPorFecha extends javax.swing.JInternalFrame
 
         pnlParametros.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        lblFechaInicial.setText("Fecha Inicial");
+        lblFechaInicial.setText("Fecha");
 
-        lblFechaFinal.setText("Fecha Final");
-        lblFechaFinal.setToolTipText("Ingrese la Fecha Final");
+        txtFechaInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd-MM-yyyy"))));
+        txtFechaInicial.setToolTipText("Ingrese la Fecha Inicial");
 
         btnGenerarReporte.setText("Generar Reporte");
         btnGenerarReporte.addActionListener(new java.awt.event.ActionListener() {
@@ -114,6 +118,12 @@ public class ReportesHistorialComprasPorFecha extends javax.swing.JInternalFrame
             }
         });
 
+        jLabel2.setText("Turno");
+
+        cbxTurno.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Mañana", "Tarde", "Noche" }));
+
+        jLabel4.setText("Usuario");
+
         javax.swing.GroupLayout pnlParametrosLayout = new javax.swing.GroupLayout(pnlParametros);
         pnlParametros.setLayout(pnlParametrosLayout);
         pnlParametrosLayout.setHorizontalGroup(
@@ -121,15 +131,19 @@ public class ReportesHistorialComprasPorFecha extends javax.swing.JInternalFrame
             .addGroup(pnlParametrosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlParametrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnGenerarReporte, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
                     .addGroup(pnlParametrosLayout.createSequentialGroup()
                         .addGroup(pnlParametrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblFechaInicial)
-                            .addComponent(lblFechaFinal))
-                        .addGap(33, 33, 33)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4))
+                        .addGap(36, 36, 36)
                         .addGroup(pnlParametrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtFechaInicial)
-                            .addComponent(txtFechaFinal)))
-                    .addComponent(btnGenerarReporte, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))
+                            .addComponent(txtUsuario)
+                            .addComponent(cbxTurno, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(pnlParametrosLayout.createSequentialGroup()
+                        .addComponent(lblFechaInicial)
+                        .addGap(43, 43, 43)
+                        .addComponent(txtFechaInicial)))
                 .addContainerGap())
         );
         pnlParametrosLayout.setVerticalGroup(
@@ -139,11 +153,15 @@ public class ReportesHistorialComprasPorFecha extends javax.swing.JInternalFrame
                 .addGroup(pnlParametrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFechaInicial)
                     .addComponent(txtFechaInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlParametrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblFechaFinal)
-                    .addComponent(txtFechaFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlParametrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(cbxTurno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
                 .addComponent(btnGenerarReporte)
                 .addContainerGap())
         );
@@ -176,17 +194,26 @@ public class ReportesHistorialComprasPorFecha extends javax.swing.JInternalFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarReporteActionPerformed
-
-        Mensaje mensaje = new Mensaje();
-
         try {
             Conexion Acceso = new Conexion();
-            URL url_reporte = this.getClass().getResource("/QuickMeal/Reportes/HistorialComprasPorFecha.jasper");
+            URL url_reporte = this.getClass().getResource("/QuickMeal/Reportes/ResumenDeVentas.jasper");
             JasperReport reporte = (JasperReport) JRLoader.loadObject(url_reporte);
-            //ENVIAR EL PARAMETRO AL REPORTES
             HashMap parametro = new HashMap();
-            parametro.put("P_FECHA_INICIAL", txtFechaInicial.getText());
-            parametro.put("P_FECHA_FINAL", txtFechaFinal.getText());
+            
+            if(txtFechaInicial.getText().isEmpty()) {
+                parametro.put("P_FECHA", null);
+            } else {
+                parametro.put("P_FECHA", txtFechaInicial.getText());
+            }
+
+            if(txtUsuario.getText().isEmpty()){
+                parametro.put("P_USUARIO", null);
+            } else {
+                parametro.put("P_USUARIO", txtUsuario.getText());
+            }
+            
+            parametro.put("P_TURNO",cbxTurno.getSelectedItem().toString());
+            
             JasperPrint pantalla = JasperFillManager.fillReport(reporte, parametro, Acceso.conectar());
             JasperViewer visualizador = new JasperViewer(pantalla, false);
             visualizador.show();
@@ -197,14 +224,16 @@ public class ReportesHistorialComprasPorFecha extends javax.swing.JInternalFrame
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerarReporte;
-    private javax.swing.JLabel lblFechaFinal;
+    private javax.swing.JComboBox cbxTurno;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel lblFechaInicial;
     private javax.swing.JLabel lblFormato;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlFormato;
     private javax.swing.JPanel pnlParametros;
     private javax.swing.JPanel pnlTitulo;
-    private javax.swing.JTextField txtFechaFinal;
-    private javax.swing.JTextField txtFechaInicial;
+    private javax.swing.JFormattedTextField txtFechaInicial;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

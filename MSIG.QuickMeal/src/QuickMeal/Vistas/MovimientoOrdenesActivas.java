@@ -105,6 +105,16 @@ public class MovimientoOrdenesActivas extends javax.swing.JInternalFrame {
         txtIdCliente.setText(String.valueOf(objetoCliente.getId_cliente()));
         txtEmpresa.setText(objetoCliente.getEmpresa_cliente());
     }
+    
+    private void calcularPropina(){
+        AccesoVenta venta = new  AccesoVenta();
+        Double valor_venta = venta.buscarTotalVenta(Integer.parseInt(tblOrdenes.getValueAt(tblOrdenes.getSelectedRow(),0).toString()));
+        Double valor_descuento =Double.parseDouble(txtDescuento.getText());
+        Double valor_extra = Double.parseDouble(txtExtras.getText());
+        Double valor_propina = 0.1 * (valor_venta + valor_extra - valor_descuento );
+        txtPropina.setText(String.valueOf(Aproximar(valor_propina,2)));
+        fila_seleccionada = tblOrdenes.getSelectedRow();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -178,6 +188,11 @@ public class MovimientoOrdenesActivas extends javax.swing.JInternalFrame {
         jLabel6.setText("Descuento");
 
         txtDescuento.setText("0");
+        txtDescuento.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                focusLostTxtDescuento(evt);
+            }
+        });
 
         txtPropina.setText("0");
 
@@ -194,6 +209,11 @@ public class MovimientoOrdenesActivas extends javax.swing.JInternalFrame {
         jLabel7.setText("Extras");
 
         txtExtras.setText("0");
+        txtExtras.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                focusLostTxtExtras(evt);
+            }
+        });
 
         txtEmpresa.setEditable(false);
 
@@ -1313,6 +1333,14 @@ public class MovimientoOrdenesActivas extends javax.swing.JInternalFrame {
             mensaje.manipulacionExcepciones("critico", "No se puede generar el reporte");
         }
     }//GEN-LAST:event_btnImprimirTIcketSumadoActionPerformed
+
+    private void focusLostTxtDescuento(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_focusLostTxtDescuento
+        calcularPropina();
+    }//GEN-LAST:event_focusLostTxtDescuento
+
+    private void focusLostTxtExtras(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_focusLostTxtExtras
+        calcularPropina();
+    }//GEN-LAST:event_focusLostTxtExtras
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnActualizar;
