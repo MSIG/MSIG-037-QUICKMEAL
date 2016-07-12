@@ -196,7 +196,7 @@ public class ReportesCierreDiarioCaja extends javax.swing.JInternalFrame {
     private void btnGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarReporteActionPerformed
         try {
             Conexion Acceso = new Conexion();
-            URL url_reporte = this.getClass().getResource("/QuickMeal/Reportes/ResumenDeVentas.jasper");
+            URL url_reporte = this.getClass().getResource("/QuickMeal/Reportes/CierreCajaDiario.jasper");
             JasperReport reporte = (JasperReport) JRLoader.loadObject(url_reporte);
             HashMap parametro = new HashMap();
             
